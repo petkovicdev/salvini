@@ -27,18 +27,24 @@ client.on('messageCreate', async (message) => {
 
     console.log(differenceUnix.toString());
 
-    if (differenceUnix < 172800) {   // 48 Hours
-        console.log('true');
-        if (message.content.length < 24) {
-            if (message.attachments.size > 0) {
+    if (differenceUnix < 172800) { // 48 Hours
 
-                var hours = Math.floor(differenceUnix / 60 / 60);
+        var hours = Math.floor(differenceUnix / 60 / 60);
 
+        if (message.attachments.size > 0) {
+            await message.reply('Possible scam, user has been in the server for ' + hours.toString() + " hours and is sending an image with no text or partial text.");
+            await message.delete();
+            return;
+        }
+
+        if (differenceUnix < 86400) {
+            if (message.content.length > 60) {
                 await message.reply('Possible scam, user has been in the server for ' + hours.toString() + " hours and is sending an image with no text or partial text.");
                 await message.delete();
-
+                return;
             }
         }
+        
     }
     
 });
